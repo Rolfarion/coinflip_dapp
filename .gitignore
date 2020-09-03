@@ -3,5 +3,14 @@
 # Useful .gitignore templates: https://github.com/github/gitignore
 node_modules
 images
+doc
+img
 dist
 .cache
+.gitattributes
+.gitignore
+.htacces
+LICENSE.txt
+robots.txt
+tile-wide.png
+tile.png
