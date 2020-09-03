@@ -1,0 +1,14 @@
+/* the width of all the elements will contain the padding. */
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+input[type=text] {
+  // input elements with type="text" attribute
+  padding:10px;
+  margin:10px 0; // add top and bottom margin
+}
+
+fieldset {
+
+}

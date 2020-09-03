@@ -1,0 +1,88 @@
+#container {
+   display: block;
+   width:   80%;
+   margin: 0 auto;
+   padding: 0;
+   background-color: lightgray;
+
+}
+
+#betsContainer {
+width:   48%;
+display: inline-block;
+margin: 0 auto;
+}
+#jackpotContainer {
+width:   50%;
+display: inline-block;
+margin: 0 auto;
+}
+
+#choice {
+   width:   50%;
+   display: inline-block;
+   margin: 0;
+   border: 0px solid red;
+   text-align: center;
+}p{
+   font-size: 1.2em;
+}
+
+#coinHeads, #coinTails {
+   display:inline-block;
+   margin: 0 3%;
+   padding:0;
+}span {
+   display: block;
+}
+
+#placeBetView {
+   padding: 0 20px 10px 20px;
+}
+
+.withdrawFunds, .addFunds{
+   display: block;
+   margin: 1px 3px 3px 0;
+}
+span.msg{
+   display: inline-block;
+   color:   red;
+   margin-left: 5px;
+}
+
+button{
+   display:inline-block;
+   font-family: Verdana, Geneva, sans-serif;
+   font-size: 11px;
+   font-style: normal;
+   font-weight:bold;
+   cursor:pointer;
+	color:#ffffff;
+   padding:8px 20px;
+   box-shadow:inset 0px 1px 0px 0px #a4e271;
+	background:linear-gradient(to bottom, #89c403 5%, #77a809 100%);
+	background-color:#89c403;
+	border-radius:6px;
+	border:1px solid #74b807;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #528009;
+}
+
+header{
+   height: 150px;
+   padding: 0 20px;
+   background-color: darkgray;
+}
+footer{
+   height: 150px;
+   padding: 0 20px;
+   background-color: darkblue;
+}
+
+input{
+   margin: 2px 3px;
+}
+
+h1{
+   margin: 0;
+}

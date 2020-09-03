@@ -1,0 +1,108 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <meta name="description" content="Coinflip game on the Ethereum blockchain">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="">
+  <meta property="og:type" content="">
+  <meta property="og:url" content="">
+  <meta property="og:image" content="">
+
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="apple-touch-icon" href="icon.png">
+  <!-- Place favicon.ico in the root directory -->
+
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/coin.css">
+
+  <meta name="theme-color" content="#fafafa">
+</head>
+
+<body>
+<div id="container">
+   <header>
+      <h1>DeFi Casino</h1>
+      <h2>Account: <span class="showAccount"></span></h2>
+   </header>
+
+   <section id="placeBetView">
+      <form action method="post" id="bet_form" class="bet_form">
+         <div id="choice">
+            <p>Choose head or tails</p>
+            <div id="coinHeads">
+               <img src="images/ethereum_head.png" class="img" draggable="false" />
+               <span>
+                  <input type="radio" id="heads" name="coin" value="heads">
+                  <label for="heads">Heads</label>
+               </span>
+            </div>
+
+            <div id="coinTails">
+               <img src="images/ethereum_tail.png" class="img" draggable="false" />
+               <span>
+                  <input type="radio" id="tails" name="coin" value="tails">
+                  <label for="tails">Tails</label>
+               </span>
+            </div>
+         </div>
+
+         <div id="coin-flip-cont">
+            <div id="coin">
+               <div class="front"></div>
+               <div class="back"></div>
+            </div>
+         </div>
+
+         <div id="betsContainer">
+            <p><label for="bet">Place a bet:</label></p>
+            <p><input type="text" id="bet" /> in ether. Minimum bet is 0.01 ether</p>
+            <button type="submit" id="submitBet">Flip a coin</button>
+            <p>Bet placed: <span class="wager"></span></p>
+            <p><span class="outcome"></span></p>
+         </div>
+
+         <div id="jackpotContainer">
+            <p><label for="jackpot">The Jackpot:</label></p>
+            <p><span id="jackpot"></span></p>
+         </div>
+
+         <div id="the_bank">
+            <p><label for="banker">The Banker:</label></p>
+            <div class="withdrawFunds">
+               <button type="submit" id="submit_withdraw">Withdraw the Jackpot</button>
+               <span class="msg"></span>
+            </div>
+            <div class="addFunds">
+               <button type="submit" id="submit_addFunds">Add funds to the Jackpot</button>
+               <input type="text" id="addFundsField">Add amount in Ether.
+            </div>
+         </div>
+      </form>
+   </section>
+
+   <footer>
+   </footer>
+</div>
+   <script type="text/javascript" src="js/vendor/jquery-3.5.1.min.js"></script>
+   <script type="text/javascript" src="js/vendor/web3.min.js"></script>
+   <script type="text/javascript" src="js/abi.js"></script>
+   <script type="text/javascript" src="js/vendor/modernizr-3.11.2.min.js"></script>
+   <script type="text/javascript" src="js/plugins.js"></script>
+   <script type="text/javascript" src="js/main.js"></script>
+   <!--script type="text/javascript" src="js/coin_rotate.js"></script-->
+
+  <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID.
+  <script>
+    window.ga = function () { ga.q.push(arguments) }; ga.q = []; ga.l = +new Date;
+    ga('create', 'UA-XXXXX-Y', 'auto'); ga('set', 'anonymizeIp', true); ga('set', 'transport', 'beacon'); ga('send', 'pageview')
+  </script>
+  <script src="https://www.google-analytics.com/analytics.js" async></script> -->
+</body>
+
+</html>
