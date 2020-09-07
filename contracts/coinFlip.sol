@@ -1,7 +1,8 @@
 import "./Ownable.sol";
+import "./provableAPi.sol";
 pragma solidity 0.5.12;
 
-contract coinFlip is Ownable{
+contract coinFlip is Ownable, usingProvable{
 
    uint public playerBalance;
    address payable public payableAddress;
