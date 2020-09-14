@@ -1,5 +1,5 @@
-var contractAddress = '0x8664A8d4831c142BDe1f6cf77128528d7D8cd917';
-var ownerAddress = '0x08538672f578adDeC7EDAa4156e7770ce9D738f3';
+var contractAddress = '0xc1EcfBe42C86008174D6A305DE60E71347945727';
+var ownerAddress = '0x27Fe75BD164c92BA21c1fd617dF1135bd2520375';
 
 var spinArray = ['animation900','animation1080','animation1260','animation1440','animation1620','animation1800','animation1980','animation2160'];
 const web3 = new Web3(window.web3.currentProvider);

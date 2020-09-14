@@ -8,15 +8,15 @@
       "type": "constructor"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.5.12+commit.7709ece9\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/D/blockchainProjects/EthCourse201/Project_coinFlip/contracts/Ownable.sol\":\"Ownable\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/D/blockchainProjects/EthCourse201/Project_coinFlip/contracts/Ownable.sol\":{\"keccak256\":\"0x27db0bae7f071bc2809560ba1d15389d90cde4d3576050ecc26f39f60a627c89\",\"urls\":[\"bzz-raw://03873dccde7919ddc7efccdaf4a354d0a737e9e0ed2d9a4668e1d56c7174dd9c\",\"dweb:/ipfs/QmUbZF7J8F2yHsBSfqj6fL4uhEdpeQyHK4ZLW1Lm2HxZb7\"]}},\"version\":1}",
-  "bytecode": "0x6080604052348015600f57600080fd5b50336000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550603e80605d6000396000f3fe6080604052600080fdfea265627a7a723158208360d819aaff962644107b42a1bc573184ade5e4d58b2360d697824db82d64eb64736f6c634300050c0032",
-  "deployedBytecode": "0x6080604052600080fdfea265627a7a723158208360d819aaff962644107b42a1bc573184ade5e4d58b2360d697824db82d64eb64736f6c634300050c0032",
+  "metadata": "{\"compiler\":{\"version\":\"0.5.12+commit.7709ece9\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/D/blockchainProjects/EthCourse201/coinflip_dapp/contracts/Ownable.sol\":\"Ownable\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/D/blockchainProjects/EthCourse201/coinflip_dapp/contracts/Ownable.sol\":{\"keccak256\":\"0x27db0bae7f071bc2809560ba1d15389d90cde4d3576050ecc26f39f60a627c89\",\"urls\":[\"bzz-raw://03873dccde7919ddc7efccdaf4a354d0a737e9e0ed2d9a4668e1d56c7174dd9c\",\"dweb:/ipfs/QmUbZF7J8F2yHsBSfqj6fL4uhEdpeQyHK4ZLW1Lm2HxZb7\"]}},\"version\":1}",
+  "bytecode": "0x6080604052348015600f57600080fd5b50336000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550603e80605d6000396000f3fe6080604052600080fdfea265627a7a72315820e43d1c7cc4184f76ed37b5b9d1477637fd446732cf0eaf7842be1e3105497d8a64736f6c634300050c0032",
+  "deployedBytecode": "0x6080604052600080fdfea265627a7a72315820e43d1c7cc4184f76ed37b5b9d1477637fd446732cf0eaf7842be1e3105497d8a64736f6c634300050c0032",
   "sourceMap": "27:223:1:-;;;188:57;8:9:-1;5:2;;;30:1;27;20:12;5:2;188:57:1;227:10;219:5;;:18;;;;;;;;;;;;;;;;;;27:223;;;;;;",
   "deployedSourceMap": "27:223:1:-;;;;;",
   "source": "pragma solidity 0.5.12;\r\n\r\ncontract Ownable{\r\n    address payable owner;\r\n\r\n    modifier onlyOwner(){\r\n        require(msg.sender == owner);\r\n        _; //Continue execution\r\n    }\r\n\r\n    constructor() public{\r\n        owner = msg.sender;\r\n    }\r\n\r\n}\r\n",
-  "sourcePath": "D:\\blockchainProjects\\EthCourse201\\Project_coinFlip\\contracts\\Ownable.sol",
+  "sourcePath": "D:\\blockchainProjects\\EthCourse201\\coinflip_dapp\\contracts\\Ownable.sol",
   "ast": {
-    "absolutePath": "/D/blockchainProjects/EthCourse201/Project_coinFlip/contracts/Ownable.sol",
+    "absolutePath": "/D/blockchainProjects/EthCourse201/coinflip_dapp/contracts/Ownable.sol",
     "exportedSymbols": {
       "Ownable": [
         61
@@ -104,7 +104,7 @@
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 208,
+                            "referencedDeclaration": 12933,
                             "src": "119:3:1",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
@@ -158,10 +158,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        211,
-                        212
+                        12936,
+                        12937
                       ],
-                      "referencedDeclaration": 211,
+                      "referencedDeclaration": 12936,
                       "src": "111:7:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -243,7 +243,7 @@
                         "name": "msg",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 208,
+                        "referencedDeclaration": 12933,
                         "src": "227:3:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
@@ -309,7 +309,7 @@
     "src": "0:252:1"
   },
   "legacyAST": {
-    "absolutePath": "/D/blockchainProjects/EthCourse201/Project_coinFlip/contracts/Ownable.sol",
+    "absolutePath": "/D/blockchainProjects/EthCourse201/coinflip_dapp/contracts/Ownable.sol",
     "exportedSymbols": {
       "Ownable": [
         61
@@ -397,7 +397,7 @@
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 208,
+                            "referencedDeclaration": 12933,
                             "src": "119:3:1",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
@@ -451,10 +451,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        211,
-                        212
+                        12936,
+                        12937
                       ],
-                      "referencedDeclaration": 211,
+                      "referencedDeclaration": 12936,
                       "src": "111:7:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -536,7 +536,7 @@
                         "name": "msg",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 208,
+                        "referencedDeclaration": 12933,
                         "src": "227:3:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
@@ -607,7 +607,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.16",
-  "updatedAt": "2020-09-02T23:36:27.448Z",
+  "updatedAt": "2020-09-14T21:06:16.112Z",
   "devdoc": {
     "methods": {}
   },
