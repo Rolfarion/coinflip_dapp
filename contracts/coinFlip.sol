@@ -24,6 +24,7 @@ contract coinFlip is Ownable, usingProvable{
    mapping (address => bool) private awaitBets; // check player has a bet going
 
    event flipRes(bytes32 queryID, uint playerChoice, address playerAddress);
+   event flipMessage(string message);
    event invest(uint value, address player);
    event generatedRandomNumber(uint256 randomNumber);
 
@@ -42,35 +43,39 @@ contract coinFlip is Ownable, usingProvable{
      *   playerChoice: 1 == Tails
      */
      require(msg.value >= 0.01 ether, "Place a bet first.");
-     require(awaitBets[msg.sender] == false, "Already placed one bet, waiting for the result.");
+     if (awaitBets[msg.sender] != false) {
 
-     uint256 QUERY_EXECUTION_DELAY = 0;
-     uint256 GAS_FOR_CALLBACK = 200000;
-     bytes32 queryID = provable_newRandomDSQuery(QUERY_EXECUTION_DELAY, NUM_RANDOM_BYTES_REQUESTED, GAS_FOR_CALLBACK); //uint result = pseudoRandom();
+        uint256 QUERY_EXECUTION_DELAY = 0;
+        uint256 GAS_FOR_CALLBACK = 200000;
+        bytes32 queryID = provable_newRandomDSQuery(QUERY_EXECUTION_DELAY, NUM_RANDOM_BYTES_REQUESTED, GAS_FOR_CALLBACK); //uint result = pseudoRandom();
 
-     // Create a new bet
-     Bet memory newBet;
-     newBet.playerAddress = msg.sender;
-     newBet.betID = queryID;
-     newBet.playerChoice = playerChoice;
-     newBet.betAmount = msg.value;
+        // Create a new bet
+        Bet memory newBet;
+        newBet.playerAddress = msg.sender;
+        newBet.betID = queryID;
+        newBet.playerChoice = playerChoice;
+        newBet.betAmount = msg.value;
 
-     addToCurrentBets(newBet.betID, newBet);
+        addToCurrentBets(newBet.betID, newBet);
 
-     awaitBets[msg.sender] = true;
+        awaitBets[msg.sender] = true;
 
-     emit flipRes(newBet.betID, newBet.playerChoice, msg.sender);
+        emit flipRes(newBet.betID, newBet.playerChoice, msg.sender);
 
-     /**
-      *  __callback takes the Id of the query, the result, and proof??
-      * emits either 1 or 0 (Heads or Tails);
-      **/
-     __callback(newBet.betID, "1", bytes("test"));
+        /**
+         *  __callback takes the Id of the query, the result, and proof??
+         * emits either 1 or 0 (Heads or Tails);
+         **/
+        __callback(newBet.betID, "1", bytes("test"));
 
-      //if(result == playerChoice){
-         /* pay out winnings */
-      //   msg.sender.transfer(msg.value * 2);
-      //}
+         //if(result == playerChoice){
+            /* pay out winnings */
+         //   msg.sender.transfer(msg.value * 2);
+         //}
+      } else {
+         string memory message = 'awaiting previous bet result.';
+         emit flipMessage(message);
+      }
    }
 
    function addToCurrentBets(bytes32 queryID, Bet memory newBet) private{

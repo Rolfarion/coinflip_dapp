@@ -8,6 +8,7 @@ window.addEventListener('load', async function() {
    const showAccount = document.querySelector('.showAccount');
 
    if(window.ethereum) {
+
       try {
          // Request account access if needed
          await window.ethereum.enable().then((account) => {
@@ -19,8 +20,8 @@ window.addEventListener('load', async function() {
 
             contractInstance.events.flipRes( async function(error, result){
                if(!error){
+                  console.info('flipRes event: ' + result);
                   await flipCoinAnim().then(() => {
-
 
                      setTimeout(function() {
                         showCoinResult(result.returnValues.result);
@@ -40,6 +41,15 @@ window.addEventListener('load', async function() {
                }
             });
 
+            contractInstance.events.generatedRandomNumber( async function(error, result){
+               if(!error){
+                  console.info('generatedRandomNumber event: ' + result);
+               }else{
+                  console.info('error: ' + error);
+               }
+
+            });
+
             /**
              * Action when a bet is placed.
              * Get the value of the bet and check if it is valid.
@@ -56,9 +66,11 @@ window.addEventListener('load', async function() {
                   $('.outcome').html("Place a bet first!");
                } else {
                $('.wager').html( "Placed a bet of: " + result.betValue + " ETH");
-
+console.log('result: ' + result);
+console.log(web3);
+console.log('e: ' + e);
                   try {
-                     contractInstance.methods.flipCoin(parseInt(result.betCoinValue)).send({from: web3.givenProvider.selectedAddress, value: result.value});
+                     contractInstance.methods.flipCoin(parseInt(result.betCoinChoice)).send({from: web3.givenProvider.selectedAddress, value: result.value});
                   } catch (e) {
                      console.log(e);
                   }
@@ -91,8 +103,10 @@ window.addEventListener('load', async function() {
 
                try {
                   let addFundsAmount = web3.utils.toWei($("#addFundsField").val(), 'ether');
+                  console.log(addFundsAmount);
                   await contractInstance.methods.investToContract(addFundsAmount).send({from: web3.givenProvider.selectedAddress, value: addFundsAmount})
                   .then(() => {
+                     console.log(web3.givenProvider.selectedAddress);
                         /* Update the balance of the contract */
                         displayContractBalance();
                   });
@@ -151,18 +165,18 @@ window.addEventListener('load', async function() {
 
                let betCoin = $("input[name='coin']:checked").val();
                let betValue = $("#bet").val();
-               let betCoinValue;
+               let betCoinChoice;
 
                if(betCoin == "heads"){
-                  betCoinValue = 0;
+                  betCoinChoice = 0;
                }else if (betCoin == "tails") {
-                  betCoinValue = 1;
+                  betCoinChoice = 1;
                }
 
                var config = {
                   value: web3.utils.toWei(betValue, "ether"),
                   betCoinResult: betCoin,
-                  betCoinValue: betCoinValue,
+                  betCoinChoice: betCoinChoice,
                   betValue: betValue
                }
 
