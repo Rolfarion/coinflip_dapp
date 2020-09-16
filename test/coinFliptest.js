@@ -6,12 +6,29 @@ contract("CoinFlip", async function(accounts){
    let instance;
 
    before(async function(){
-     instance = await CoinFlip.deployed()
+     instance = await CoinFlip.deployed();
    });
 
-  it("should be able to invest into contract", async function(){
+   /**
+   *  Method: investToContract(uint value);
+   **/
+   it("should be able to invest into contract", async function(){
      let value = web3.utils.toWei("1", "ether");
      await truffleAssert.passes(instance.investToContract(value, {from: accounts[0], value: value}), truffleAssert.ErrorType.REVERT);
+  });
+
+  /**
+  *   Method: flipCoin(uint playerChoice);
+  *   Take the value send by the player.
+  *   Check if player has an ongoing bet.
+  *   Ask for a random number
+  **/
+
+  it("should be able to get the players choice, recieve payment value and request a random number from the oracle", async function(){
+     let betCoinChoice = 1;
+     let value = web3.utils.toWei("0.2", "ether");
+     await truffleAssert.passes(instance.flipCoin(betCoinChoice, {from: accounts[0], value: value}), truffleAssert.ErrorType.REVERT);
+     //let flipResult = await instance.events.flipRes();
   });
 
   it("should be able to get balance of contract", async function(){
