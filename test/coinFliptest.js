@@ -27,6 +27,7 @@ contract("CoinFlip", async function(accounts){
   it("should be able to get the players choice, recieve payment value and request a random number from the oracle", async function(){
      let betCoinChoice = 1;
      let value = web3.utils.toWei("0.2", "ether");
+     instance.setAwaitBets(false, accounts[0]);
      await truffleAssert.passes(instance.flipCoin(betCoinChoice, {from: accounts[0], value: value}), truffleAssert.ErrorType.REVERT);
      //let flipResult = await instance.events.flipRes();
   });
