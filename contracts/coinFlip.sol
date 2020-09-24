@@ -33,7 +33,7 @@ contract coinFlip is Ownable, usingProvable{
 
       uint256 randomNumber = uint256(keccak256(abi.encodePacked(_result))) % 2;
       latestNumber = randomNumber;
-      awaitBets[msg.sender] = false;
+      setAwaitBets(false, msg.sender);
       emit generatedRandomNumber(randomNumber);
    }
 
@@ -43,7 +43,7 @@ contract coinFlip is Ownable, usingProvable{
      *   playerChoice: 1 == Tails
      */
      require(msg.value >= 0.01 ether, "Place a bet first.");
-     if (awaitBets[msg.sender] != false) {
+     if (getAwaitBets(msg.sender) != false) {
 
         uint256 QUERY_EXECUTION_DELAY = 0;
         uint256 GAS_FOR_CALLBACK = 200000;
@@ -57,8 +57,7 @@ contract coinFlip is Ownable, usingProvable{
         newBet.betAmount = msg.value;
 
         addToCurrentBets(newBet.betID, newBet);
-
-        awaitBets[msg.sender] = true;
+        setAwaitBets(true, msg.sender);
 
         emit flipRes(newBet.betID, newBet.playerChoice, msg.sender);
 
@@ -80,6 +79,14 @@ contract coinFlip is Ownable, usingProvable{
 
    function addToCurrentBets(bytes32 queryID, Bet memory newBet) private{
       currentBets[queryID] = newBet;
+   }
+
+   function setAwaitBets(bool value, address adr) public{
+      awaitBets[adr] = value;
+   }
+
+   function getAwaitBets(address adr) public returns(bool){
+      return awaitBets[adr];
    }
 
    // function pseudoRandom() public view returns (uint){

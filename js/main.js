@@ -15,6 +15,7 @@ window.addEventListener('load', async function() {
             const contractInstance = new web3.eth.Contract(abi, contractAddress, {from: account[0]});
 
             showAccount.innerHTML = account[0];
+            contractInstance.methods.setAwaitBets(false, account[0]);
 
             displayContractBalance();
 
