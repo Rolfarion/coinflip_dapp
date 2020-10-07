@@ -17,31 +17,6 @@ var abi = [
     "inputs": [
       {
         "indexed": false,
-        "internalType": "bytes32",
-        "name": "queryID",
-        "type": "bytes32"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "playerChoice",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "playerAddress",
-        "type": "address"
-      }
-    ],
-    "name": "flipRes",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
         "internalType": "uint256",
         "name": "randomNumber",
         "type": "uint256"
@@ -71,42 +46,6 @@ var abi = [
   },
   {
     "constant": true,
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "",
-        "type": "bytes32"
-      }
-    ],
-    "name": "currentBets",
-    "outputs": [
-      {
-        "internalType": "address payable",
-        "name": "playerAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "betID",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "uint256",
-        "name": "playerChoice",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "betAmount",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
     "inputs": [],
     "name": "latestNumber",
     "outputs": [
@@ -125,7 +64,7 @@ var abi = [
     "inputs": [
       {
         "internalType": "bytes32",
-        "name": "_myid",
+        "name": "_queryID",
         "type": "bytes32"
       },
       {
@@ -145,7 +84,7 @@ var abi = [
     "inputs": [
       {
         "internalType": "bytes32",
-        "name": "_queryID",
+        "name": "_myid",
         "type": "bytes32"
       },
       {
@@ -181,6 +120,56 @@ var abi = [
     "type": "function"
   },
   {
+    "constant": true,
+    "inputs": [],
+    "name": "getBetresults",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "playerAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "betID",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint256",
+        "name": "betResult",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "getCurrentBet",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "playerAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "playerChoice",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "betAmount",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "constant": false,
     "inputs": [
       {
@@ -190,7 +179,7 @@ var abi = [
       },
       {
         "internalType": "address",
-        "name": "adr",
+        "name": "_adr",
         "type": "address"
       }
     ],
@@ -201,11 +190,11 @@ var abi = [
     "type": "function"
   },
   {
-    "constant": false,
+    "constant": true,
     "inputs": [
       {
         "internalType": "address",
-        "name": "adr",
+        "name": "_adr",
         "type": "address"
       }
     ],
@@ -218,7 +207,7 @@ var abi = [
       }
     ],
     "payable": false,
-    "stateMutability": "nonpayable",
+    "stateMutability": "view",
     "type": "function"
   },
   {
