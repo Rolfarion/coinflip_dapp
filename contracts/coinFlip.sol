@@ -1,105 +1,77 @@
 import "./Ownable.sol";
-import "./provableAPi.sol";
+import "./provableAPI.sol";
 pragma solidity 0.5.12;
 
 contract coinFlip is Ownable, usingProvable{
 
-   struct Bet {
-      address payable playerAddress;
-      uint playerChoice;
-      uint betAmount;
-   }
-
-   struct BetResult {
-      address payable playerAddress;
-      bytes32 betID;
-      uint betResult;
-   }
+    struct Bet {
+        address payable playerAddress;
+        uint256 playerChoice;
+        uint playerBetAmount;
+    }
 
    uint256 constant NUM_RANDOM_BYTES_REQUESTED = 1;
    uint256 public latestNumber;
+   string public betResult;
 
    modifier min_costs(uint cost){
       require(msg.value >= cost);
       _;
    }
 
-   mapping (address => BetResult) BetResults;
-   mapping (address => Bet) currentBets; // collection of current bets pending for a result
-   mapping (address => bool) awaitBets;  //check player has a bet going
+   mapping (bytes32 => Bet) playerBets; // collection of current bets pending for a result
 
+   event proofRandomFailed(bytes32 queryId);
    event flipMessage(string message);
    event invest(uint value, address player);
-   event generatedRandomNumber(uint256 randomNumber);
+   event callbackResult(string betResult, address playerAddress);
 
-   function __callback(bytes32 _queryID, string memory _result) public {
-      require(msg.sender == provable_cbAddress());
+   constructor() public {
+    provable_setProof(proofType_Ledger);
+  }
 
-      uint256 randomNumber = uint256(keccak256(abi.encodePacked(_result))) % 2;
-      setAwaitBets(false, msg.sender);
+    function __callback(bytes32 _queryID, string memory _result,  bytes memory _proof) public {
+        require(msg.sender == provable_cbAddress());
 
-      BetResult memory newBetResult;
-      newBetResult.playerAddress = msg.sender;
-      newBetResult.betID = _queryID;
-      newBetResult.betResult = randomNumber;
+        if (provable_randomDS_proofVerify__returnCode(_queryID, _result, _proof) != 0) {
+             emit proofRandomFailed(_queryID);
+        } else {
 
-      addToBetresults(msg.sender, newBetResult);
+            uint256 randomNumber = uint256(keccak256(abi.encodePacked(_result))) % 2;
+            uint jackpot = 0;
+            betResult = 'You have lost the bet';
 
-      emit generatedRandomNumber(randomNumber);
+            if(playerBets[_queryID].playerChoice == randomNumber){
+                //player wins
+                jackpot = playerBets[_queryID].playerBetAmount * 2;
+                playerBets[_queryID].playerAddress.transfer(jackpot);
+                betResult = 'You have won the bet';
+            }
+
+            emit callbackResult(betResult, playerBets[_queryID].playerAddress);
+        }
    }
 
-   function flipCoin(uint playerChoice) public payable min_costs(0.01 ether) {
-      require(msg.value >= 0.01 ether, "Place a bet first.");
-      string memory message;
-      if (getAwaitBets(msg.sender) != true) {
-         uint256 QUERY_EXECUTION_DELAY = 0;
-         uint256 GAS_FOR_CALLBACK = 200000;
-         provable_newRandomDSQuery(QUERY_EXECUTION_DELAY, NUM_RANDOM_BYTES_REQUESTED, GAS_FOR_CALLBACK); //uint result = pseudoRandom();
+    function flipCoin(uint256 playerChoice) public payable min_costs(0.01 ether) {
+        require(msg.value >= 0.01 ether, "Place a bet first.");
 
-         // Create a new bet
-         Bet memory newBet;
-         newBet.playerAddress = msg.sender;
-         newBet.playerChoice = playerChoice;
-         newBet.betAmount = msg.value;
+        uint256 QUERY_EXECUTION_DELAY = 0;
+        uint256 GAS_FOR_CALLBACK = 200000;
+        bytes32 _queryId = provable_newRandomDSQuery(QUERY_EXECUTION_DELAY, NUM_RANDOM_BYTES_REQUESTED, GAS_FOR_CALLBACK);
 
-         addToCurrentBets(newBet.playerAddress, newBet);
-         setAwaitBets(true, msg.sender);
+        // Create a new bet
+        Bet memory newBet;
+        newBet.playerAddress = msg.sender;
+        newBet.playerChoice = playerChoice;
+        newBet.playerBetAmount = msg.value;
 
-         message = 'Your bet has been placed. Waiting for a result.';
-      } else {
-         message = 'awaiting previous bet result.';
-      }
-      emit flipMessage(message);
+        addToPlayerBets(_queryId, newBet);
+
+        emit flipMessage('Your bet has been placed. Waiting for a result.');
    }
 
-   function addToBetresults(address _adr, BetResult memory newBet) private{
-      BetResults[_adr] = newBet;
-   }
-
-   function getBetresults() public view returns(address playerAddress, bytes32 betID, uint betResult){
-      address gambler = msg.sender;
-      return (BetResults[gambler].playerAddress, BetResults[gambler].betID, BetResults[gambler].betResult);
-   }
-
-   function addToCurrentBets(address _adr, Bet memory newBet) private{
-      currentBets[_adr] = newBet;
-   }
-
-   function getCurrentBet() public view returns(address playerAddress, uint playerChoice, uint betAmount){
-      address gambler = msg.sender;
-      return (currentBets[gambler].playerAddress, currentBets[gambler].playerChoice, currentBets[gambler].betAmount);
-   }
-
-   function setAwaitBets(bool value, address _adr) public{
-      awaitBets[_adr] = value;
-   }
-
-   function getAwaitBets(address _adr) public view returns(bool){
-      bool check = false;
-      if (awaitBets[_adr] == true){
-          check = true;
-      }
-      return check;
+   function addToPlayerBets(bytes32 _queryId, Bet memory newBet) private{
+      playerBets[_queryId] = newBet;
    }
 
    function investToContract(uint value) external payable min_costs(0.001 ether){
