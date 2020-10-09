@@ -1,5 +1,30 @@
 var abi = [
   {
+    "inputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "betResult",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "playerAddress",
+        "type": "address"
+      }
+    ],
+    "name": "callbackResult",
+    "type": "event"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {
@@ -10,19 +35,6 @@ var abi = [
       }
     ],
     "name": "flipMessage",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "randomNumber",
-        "type": "uint256"
-      }
-    ],
-    "name": "generatedRandomNumber",
     "type": "event"
   },
   {
@@ -45,6 +57,34 @@ var abi = [
     "type": "event"
   },
   {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "queryId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "proofRandomFailed",
+    "type": "event"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "betResult",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "constant": true,
     "inputs": [],
     "name": "latestNumber",
@@ -64,7 +104,7 @@ var abi = [
     "inputs": [
       {
         "internalType": "bytes32",
-        "name": "_queryID",
+        "name": "_myid",
         "type": "bytes32"
       },
       {
@@ -84,7 +124,7 @@ var abi = [
     "inputs": [
       {
         "internalType": "bytes32",
-        "name": "_myid",
+        "name": "_queryID",
         "type": "bytes32"
       },
       {
@@ -117,97 +157,6 @@ var abi = [
     "outputs": [],
     "payable": true,
     "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "getBetresults",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "playerAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "betID",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "uint256",
-        "name": "betResult",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "getCurrentBet",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "playerAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "playerChoice",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "betAmount",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "internalType": "bool",
-        "name": "value",
-        "type": "bool"
-      },
-      {
-        "internalType": "address",
-        "name": "_adr",
-        "type": "address"
-      }
-    ],
-    "name": "setAwaitBets",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_adr",
-        "type": "address"
-      }
-    ],
-    "name": "getAwaitBets",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
     "type": "function"
   },
   {
