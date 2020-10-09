@@ -5,7 +5,7 @@ var spinArray = ['animation900','animation1080','animation1260','animation1440',
 const web3 = new Web3(Web3.givenProvider);
 var contractInstance;
 const ethereumButton = document.querySelector('#connectButton');
-
+var awaitBetResult = false;
 
 
 window.addEventListener('load', async function() {
@@ -17,6 +17,7 @@ window.addEventListener('load', async function() {
          // Request account access if needed
          await window.ethereum.enable().then(async (account) => {
             contractInstance = new web3.eth.Contract(abi, contractAddress, {from: account[0]});
+            showAccount.innerHTML = account[0];
 
             // web3.eth.getBlock("latest", false, (error, result) => {
             //    console.log(result.gasLimit)
@@ -30,43 +31,15 @@ window.addEventListener('load', async function() {
             });
             */
 
-            showAccount.innerHTML = account[0];
-
-            var waitBet = await displayWaitingBets(account[0]).then(() => {
-               if(waitBet){
-                  $(".outcome").text("Initiating account");
-                  setAwaitBets(false, account[0]);
-               } else {
-                  $(".outcome").text("Account ready to bet.");
-               }
-            });
-
             displayContractBalance();
 
-            contractInstance.events.generatedRandomNumber(async function(error, random){
-
+            contractInstance.events.callbackResult(async function(error, callbackResult){
                if(!error){
-                  let randomNumber = random.returnValues[0];
-                  let currentBet = await contractInstance.methods.getCurrentBet().call();
-                  let coinSide;
-
-                  showCoinResult(randomNumber);
-
-                  if(randomNumber == 0){
-                     coinSide = 'Heads';
-                  } else {
-                     coinSide = 'Tails';
-                  }
-
-                  $(".outcome").text(randomNumber);
-
-                  /* Check the results */
-                  if(randomNumber == currentBet.playerChoice){
-                        $(".outcome").text("result: " + coinSide + ". You win!!");
-                     } else {
-                        $(".outcome").text("result: " + coinSide + ". You Lose!!");
-                     }
-                  await setAwaitBets(false, account[0]);
+                  console.log(callbackResult);
+                  let betResult = callbackResult.returnValues.betResult;
+                  let playerAddress = callbackResult.returnValues.playerAddress;
+                  $(".outcome").text(betResult);
+                  awaitBetResult = false;
                   /* Update the balance of the contract */
                   displayContractBalance();
                }else{
@@ -79,20 +52,16 @@ window.addEventListener('load', async function() {
                $(".outcome").text(result.returnValues.message);
             });
 
+            contractInstance.events.proofRandomFailed(function(error, result){
+               if(error){console.log(error);}
+               console.log('proofRandomFailed', result.returnValues);
+               $(".outcome").text(result.returnValues.queryId);
+            });
+
          });/* End of acces to MetaMask */
       } catch (error) {
          console.log(error);
       }
-
-
-         async function setAwaitBets(state, address){
-            const res = await contractInstance.methods.setAwaitBets(state, address).send({from: web3.givenProvider.selectedAddress});
-         }
-
-         async function displayWaitingBets(address){
-            const resbets = await contractInstance.methods.getAwaitBets(address).call();
-            return resbets;
-         }
    } /* End if (window.ethereum) */
 });
 
@@ -101,25 +70,31 @@ window.addEventListener('load', async function() {
     * Get the value of the bet and check if it is valid.
     * Call the flipCoin method at the contract.
     **/
-   $("#submitBet").on('click', async function(e){
+   $("#submitBet").on('click', function(e){
       e.preventDefault();
-      resetCoin();
-      $('.wager').html( "");
-      $(".outcome").text("");
-      var result = getBetValue();
+
+      if(awaitBetResult == true){
+         return false;
+      } else {
+
+         resetCoin();
+         $('.wager').html( "");
+         $(".outcome").text("");
+         var result = getBetValue();
 
          $('.wager').html( "Placed a bet of: " + result.betValue + " ETH");
 
           try {
-             await contractInstance.methods.flipCoin(parseInt(result.betCoinChoice)).send({from: web3.givenProvider.selectedAddress, value: result.value})
+             contractInstance.methods.flipCoin(parseInt(result.betCoinChoice)).send({from: web3.givenProvider.selectedAddress, value: result.value})
              .then(() => {
+                awaitBetResult = true;
                 flipCoinAnim();
              });
           } catch (e) {
              console.log(e);
           }
-
-      return false;
+          return false;
+      }
    });
 
 
