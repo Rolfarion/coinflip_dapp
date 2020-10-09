@@ -86,20 +86,12 @@ window.addEventListener('load', async function() {
 
 
          async function setAwaitBets(state, address){
-            try {
-               const res = await contractInstance.methods.setAwaitBets(state, address).send({from: web3.givenProvider.selectedAddress});
-            } catch (e) {
-               console.log(e);
-            }
+            const res = await contractInstance.methods.setAwaitBets(state, address).send({from: web3.givenProvider.selectedAddress});
          }
 
          async function displayWaitingBets(address){
-            try {
-               const resbets = await contractInstance.methods.getAwaitBets(address).call();
-               return resbets;
-            } catch (e) {
-               console.log(e);
-            }
+            const resbets = await contractInstance.methods.getAwaitBets(address).call();
+            return resbets;
          }
    } /* End if (window.ethereum) */
 });
