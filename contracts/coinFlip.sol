@@ -24,7 +24,7 @@ contract coinFlip is Ownable, usingProvable{
    event proofRandomFailed(bytes32 queryId);
    event flipMessage(string message);
    event invest(uint value, address player);
-   event callbackResult(string betResult, address playerAddress);
+   event callbackResult(string betResult, uint256 randomNumber, address playerAddress);
 
    constructor() public {
     provable_setProof(proofType_Ledger);
@@ -48,12 +48,13 @@ contract coinFlip is Ownable, usingProvable{
                 betResult = 'You have won the bet';
             }
 
-            emit callbackResult(betResult, playerBets[_queryID].playerAddress);
+            emit callbackResult(betResult, randomNumber, playerBets[_queryID].playerAddress);
         }
    }
 
     function flipCoin(uint256 playerChoice) public payable min_costs(0.01 ether) {
         require(msg.value >= 0.01 ether, "Place a bet first.");
+        require(address(this).balance > msg.value, "Sorry, someone looted the jackpot. Add funds to the jackpot first");
 
         uint256 QUERY_EXECUTION_DELAY = 0;
         uint256 GAS_FOR_CALLBACK = 200000;
