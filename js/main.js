@@ -1,4 +1,4 @@
-var contractAddress = '0xE029010368b5C18cc0c53Ebf96d147e1429771dF';
+var contractAddress = '0xBD0dc23e8dDFA18a11f466Ca1Ac15Aed991654C5';
 var ownerAddress = '0x27Fe75BD164c92BA21c1fd617dF1135bd2520375';
 
 var spinArray = ['animation900','animation1080','animation1260','animation1440','animation1620','animation1800','animation1980','animation2160'];
@@ -15,7 +15,7 @@ window.addEventListener('load', async function() {
 
       try {
          // Request account access if needed
-         await window.ethereum.enable().then(async (account) => {
+         window.ethereum.enable().then((account) => {
             contractInstance = new web3.eth.Contract(abi, contractAddress, {from: account[0]});
             showAccount.innerHTML = account[0];
 
@@ -33,11 +33,12 @@ window.addEventListener('load', async function() {
 
             displayContractBalance();
 
-            contractInstance.events.callbackResult(async function(error, callbackResult){
+            contractInstance.events.callbackResult(function(error, callbackResult){
                if(!error){
-                  console.log(callbackResult);
                   let betResult = callbackResult.returnValues.betResult;
+                  let randomNumber = callbackResult.returnValues.randomNumber;
                   let playerAddress = callbackResult.returnValues.playerAddress;
+                  showCoinResult(randomNumber);
                   $(".outcome").text(betResult);
                   awaitBetResult = false;
                   /* Update the balance of the contract */
@@ -74,6 +75,7 @@ window.addEventListener('load', async function() {
       e.preventDefault();
 
       if(awaitBetResult == true){
+         $(".outcome").text("Await the result of your previous bet first please!");
          return false;
       } else {
 
@@ -98,11 +100,11 @@ window.addEventListener('load', async function() {
    });
 
 
-   $("#submit_withdraw").on('click', async function(e){
+   $("#submit_withdraw").on('click', function(e){
       e.preventDefault();
 
       try {
-         await contractInstance.methods.payOut().send({from: ownerAddress})
+         contractInstance.methods.payOut().send({from: ownerAddress})
          .then((r) => {
                /* Update the balance of the contract */
                displayContractBalance();
@@ -115,12 +117,12 @@ window.addEventListener('load', async function() {
    });
 
 
-   $("#submit_addFunds").on('click', async function(e){
+   $("#submit_addFunds").on('click', function(e){
       e.preventDefault();
 
       try {
          let addFundsAmount = web3.utils.toWei($("#addFundsField").val(), 'ether');
-         await contractInstance.methods.investToContract(addFundsAmount).send({from: web3.givenProvider.selectedAddress, value: addFundsAmount})
+         contractInstance.methods.investToContract(addFundsAmount).send({from: web3.givenProvider.selectedAddress, value: addFundsAmount})
          .then((r) => {
                /* Update the balance of the contract */
                displayContractBalance();
@@ -195,9 +197,9 @@ window.addEventListener('load', async function() {
       return config;
    }
 
-   async function displayContractBalance(){
+   function displayContractBalance(){
       try {
-         await web3.eth.getBalance(contractAddress).then(function(res){
+         web3.eth.getBalance(contractAddress).then(function(res){
             $("#jackpot").text(web3.utils.fromWei(res, "ether") + " ETH" );
          });
       } catch (e) {
