@@ -16,6 +16,12 @@ var abi = [
       },
       {
         "indexed": false,
+        "internalType": "uint256",
+        "name": "randomNumber",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
         "internalType": "address",
         "name": "playerAddress",
         "type": "address"
